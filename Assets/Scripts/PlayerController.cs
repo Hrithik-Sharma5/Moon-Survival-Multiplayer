@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     float speed;
     float turnSmoothVelocity;
     Rigidbody rb;
-    bool isAlive, isRunning;
+    bool isAlive, isRunning, isJumping;
 
     void Start()
     {
@@ -26,11 +26,24 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (isJumping)
+        {
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                isJumping = false;
+                playerAnim.SetTrigger("LandOnGround");
+            }
+        }
+    }
+
     /// <summary>
     /// To move and rotate player
     /// </summary>
     void PlayerMovement()
     {
+        #region Movement and Rotation
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");
         float targetAngle = /*Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg +*/ playerCam.eulerAngles.y;
@@ -53,9 +66,22 @@ public class PlayerController : MonoBehaviour
             speed = baseSpeed;
         }
 
+
         Vector3 playerMovement = new Vector3(h, 0, v) * speed * Time.deltaTime;
         transform.Translate(playerMovement, Space.Self);
+        #endregion
 
+        #region Jump
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isJumping)
+            {
+                isJumping = true;
+                playerAnim.SetTrigger("Jump");
+                rb.AddForce(Vector3.up*10, ForceMode.Impulse);
+            }
+        }
+        #endregion
 
         //rb.velocity = new Vector3(h * speed * Time.deltaTime, rb.velocity.y, v * speed * Time.deltaTime);
     }
