@@ -22,13 +22,20 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (!isAlive) return;
+        PlayerMovement();
+        
+    }
 
+    /// <summary>
+    /// To move and rotate player
+    /// </summary>
+    void PlayerMovement()
+    {
         float v = Input.GetAxis("Vertical");
-        float h= Input.GetAxis("Horizontal");
-        Vector3 direction = new Vector3(h, 0f, v);
-        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCam.eulerAngles.y;
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, 0.1f);
-        transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+        float h = Input.GetAxis("Horizontal");
+        float targetAngle = /*Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg +*/ playerCam.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, 0.2f);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
         if (v != 0)
         {
@@ -45,15 +52,11 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetInteger("Speed", 0);
             speed = baseSpeed;
         }
-        Debug.Log(speed);
 
-        rb.velocity = new Vector3(h * speed * Time.deltaTime, rb.velocity.y, v * speed * Time.deltaTime); 
+        Vector3 playerMovement = new Vector3(h, 0, v) * speed * Time.deltaTime;
+        transform.Translate(playerMovement, Space.Self);
 
 
-        //if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning)
-        //{
-        //    isRunning = false;
-        //    speed = speed / 2;
-        //}
+        //rb.velocity = new Vector3(h * speed * Time.deltaTime, rb.velocity.y, v * speed * Time.deltaTime);
     }
 }
