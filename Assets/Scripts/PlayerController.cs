@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Animator playerAnim;
-    [SerializeField]float baseSpeed;
+    [SerializeField] float baseSpeed;
     [SerializeField] Transform playerCam;
+    [SerializeField] GameObject shootParticle;
+    [SerializeField] GameObject HitParticle;
     float speed;
     float turnSmoothVelocity;
     Rigidbody rb;
-    bool isAlive, isRunning, isJumping;
+    bool isAlive, isRunning, isJumping, isShooting;
 
     void Start()
     {
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive) return;
         PlayerMovement();
+        Shoot();
         
     }
 
@@ -78,11 +81,40 @@ public class PlayerController : MonoBehaviour
             {
                 isJumping = true;
                 playerAnim.SetTrigger("Jump");
-                rb.AddForce(Vector3.up*10, ForceMode.Impulse);
+                rb.AddForce(Vector3.up*5, ForceMode.Impulse);
             }
         }
         #endregion
 
         //rb.velocity = new Vector3(h * speed * Time.deltaTime, rb.velocity.y, v * speed * Time.deltaTime);
+    }
+
+    void Shoot()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            shootParticle.SetActive(true);
+            isShooting = true;
+            StartCoroutine(ShootHit());
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            shootParticle.SetActive(false);
+            isShooting = false;
+        }
+
+    }
+
+    IEnumerator ShootHit()
+    {
+        while (isShooting)
+        {
+            RaycastHit _hit;
+            if(Physics.Raycast(playerCam.position, playerCam.forward, out _hit, 100))
+            {
+                Instantiate(HitParticle, _hit.point, Quaternion.identity);
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }
