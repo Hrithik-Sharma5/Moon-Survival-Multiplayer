@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         isAlive = true;
         rb = GetComponent<Rigidbody>();
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -95,12 +96,14 @@ public class PlayerController : MonoBehaviour
         {
             shootParticle.SetActive(true);
             isShooting = true;
+            playerAnim.SetBool("Firing", true);
             StartCoroutine(ShootHit());
         }
         if (Input.GetMouseButtonUp(0))
         {
             shootParticle.SetActive(false);
             isShooting = false;
+            playerAnim.SetBool("Firing", false);
         }
 
     }
@@ -114,6 +117,7 @@ public class PlayerController : MonoBehaviour
             {
                 Instantiate(HitParticle, _hit.point, Quaternion.identity);
             }
+
             yield return new WaitForSeconds(0.2f);
         }
     }
