@@ -54,15 +54,21 @@ public class PlayerController : MonoBehaviour
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, 0.2f);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-        if (v != 0)
+        if (v > 0)
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 speed = baseSpeed * 2;
+                //playerAnim.SetFloat("PlayerSpeed", 2);
                 playerAnim.SetInteger("Speed", 2);
                 isRunning = true;
             }
-            else playerAnim.SetInteger("Speed", 1);
+            else /*playerAnim.SetInteger("PlayerSpeed", 1);*/playerAnim.SetInteger("Speed", 1);
+        }
+        else if (v < 0)
+        {
+            //playerAnim.SetFloat("PlayerSpeed", -1);
+            playerAnim.SetInteger("Speed", -1);
         }
         else
         {
@@ -116,6 +122,11 @@ public class PlayerController : MonoBehaviour
             if(Physics.Raycast(playerCam.position, playerCam.forward, out _hit, 100))
             {
                 Instantiate(HitParticle, _hit.point, Quaternion.identity);
+                Idamagable damage = _hit.transform.GetComponent<Idamagable>();
+                if (damage != null)
+                {
+                    damage.TakeDamage();
+                }
             }
 
             yield return new WaitForSeconds(0.2f);

@@ -8,6 +8,7 @@ public abstract class Enemy : MonoBehaviour, Idamagable
     [SerializeField]protected float totalHealth;
     [SerializeField]protected float damageHealth;
     [SerializeField]protected Slider healthSlider;
+    [SerializeField] private GameObject enemyDieParticle;
     
     protected float currentHealth;
 
@@ -15,7 +16,6 @@ public abstract class Enemy : MonoBehaviour, Idamagable
     {
         currentHealth = totalHealth;
         healthSlider.value = 1;
-        Debug.Log("sasasassssssssss");
     }
 
     void Update()
@@ -27,5 +27,12 @@ public abstract class Enemy : MonoBehaviour, Idamagable
     {
         currentHealth -= totalHealth/damageHealth;
         healthSlider.value = currentHealth / totalHealth;
+        if (currentHealth <= 0) Die();
+    }
+
+    void Die()
+    {
+        Instantiate(enemyDieParticle, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
     }
 }
