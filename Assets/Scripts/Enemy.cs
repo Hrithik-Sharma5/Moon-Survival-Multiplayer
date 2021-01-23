@@ -17,6 +17,7 @@ public abstract class Enemy : MonoBehaviour, Idamagable
     private GameObject closestEnemy;
     private NavMeshAgent navMesh;
     private Animator anim;
+
     void Start()
     {
         navMesh = GetComponent<NavMeshAgent>();
@@ -79,13 +80,8 @@ public abstract class Enemy : MonoBehaviour, Idamagable
     public void Shoot()
     {
         var projectile = Instantiate(shootProjectile, shootingPoint.position, Quaternion.identity);
-        var direction = ((closestEnemy.transform.position+ (Vector3.up*2))- projectile.transform.position).normalized;
-
+        var direction = ((closestEnemy.transform.position+ (Vector3.up*1.2f))- projectile.transform.position).normalized;
         projectile.GetComponent<Rigidbody>().AddForce(direction * 50 , ForceMode.Impulse);
-        //projectile.GetComponent<ShootBomb>().StartSimulate(closestEnemy.transform);
-        //throwProjectile.ProjectileSimulate(closestEnemy.transform, projectile.transform);
-        //projectile.GetComponent<Rigidbody>().velocity = (closestEnemy.transform.position - this.transform.position).normalized*30;
-        //projectile.GetComponent<Rigidbody>().AddForce((closestEnemy.transform.position - this.transform.position).normalized*50, ForceMode.Impulse);
     }
 
 }
