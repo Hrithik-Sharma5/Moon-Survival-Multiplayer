@@ -1,23 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, Idamagable
 {
     [SerializeField] Animator playerAnim;
     [SerializeField] float baseSpeed, horizontalSpeed;
     [SerializeField] Transform playerCam;
     [SerializeField] GameObject shootParticle;
     [SerializeField] GameObject HitParticle;
+    [SerializeField] Slider healthSlider;
+
+
+    float totalHealth=100;
+    float damagedHealth = 90;
+    float healthToReduce;
+    float currentHealth;
     float speed;
     float turnSmoothVelocity;
     Rigidbody rb;
     bool isAlive, isRunning, isJumping, isShooting;
 
+
     void Start()
     {
         isAlive = true;
+        GameManager.allPlayers.Add(this.gameObject);
         rb = GetComponent<Rigidbody>();
+        currentHealth = totalHealth;
+        healthSlider.value = 1;
+        healthToReduce = totalHealth / damagedHealth;
         Cursor.visible = false;
     }
 
@@ -113,6 +126,15 @@ public class PlayerController : MonoBehaviour
 
         //rb.velocity = new Vector3(h * speed * Time.deltaTime, rb.velocity.y, v * speed * Time.deltaTime);
     }
+
+    public void TakeDamage()
+    {
+        currentHealth -= healthToReduce;
+        healthSlider.value = currentHealth / totalHealth;
+        if (currentHealth <= 0) Die();
+    }
+
+    void Die() { Time.timeScale = 0; }
 
     void Shoot()
     {
