@@ -109,7 +109,7 @@ NavMeshSettings:
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 45
+    agentSlope: 28
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
@@ -3911,6 +3911,28 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1195056961}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &1822834306
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822834305}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!135 &1822834308
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4357,7 +4379,7 @@ Animator:
   m_GameObject: {fileID: 2046416988}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2b77917fb514ae34b8a01460e37a844a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 38b32b5aa88f6bb4e954b9c831090990, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4402,6 +4424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnim: {fileID: 2046416989}
   baseSpeed: 5
+  horizontalSpeed: 2.5
   playerCam: {fileID: 242372600}
   shootParticle: {fileID: 1651089590}
   HitParticle: {fileID: 1491359990764140, guid: da8e0ab0efa4630478292ef0e2514c37,

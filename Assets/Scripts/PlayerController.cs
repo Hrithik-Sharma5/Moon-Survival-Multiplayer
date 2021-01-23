@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Animator playerAnim;
-    [SerializeField] float baseSpeed;
+    [SerializeField] float baseSpeed, horizontalSpeed;
     [SerializeField] Transform playerCam;
     [SerializeField] GameObject shootParticle;
     [SerializeField] GameObject HitParticle;
@@ -59,25 +59,43 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 speed = baseSpeed * 2;
-                //playerAnim.SetFloat("PlayerSpeed", 2);
-                playerAnim.SetInteger("Speed", 2);
+                playerAnim.SetFloat("Horizontal", 2);
                 isRunning = true;
             }
-            else /*playerAnim.SetInteger("PlayerSpeed", 1);*/playerAnim.SetInteger("Speed", 1);
+            else playerAnim.SetFloat("Horizontal", 1);
+
+            playerAnim.SetInteger("Speed", 1);
         }
         else if (v < 0)
         {
-            //playerAnim.SetFloat("PlayerSpeed", -1);
+            playerAnim.SetFloat("Horizontal", -1);
             playerAnim.SetInteger("Speed", -1);
         }
         else
         {
+            playerAnim.SetFloat("Horizontal", 0);
             playerAnim.SetInteger("Speed", 0);
             speed = baseSpeed;
         }
 
+        if (h > 0)
+        {
+            playerAnim.SetFloat("Vertical", 1);
+            playerAnim.SetInteger("Speed", 1);
+        }
+        else if (h < 0)
+        {
+            playerAnim.SetFloat("Vertical", -1);
+            playerAnim.SetInteger("Speed", -1);
+        }
+        else
+        {
+            playerAnim.SetFloat("Vertical", 0);
+            if(v==0)
+            playerAnim.SetInteger("Speed", 0);
+        }
 
-        Vector3 playerMovement = new Vector3(h, 0, v) * speed * Time.deltaTime;
+        Vector3 playerMovement = new Vector3(h * horizontalSpeed, 0, v * speed)  * Time.deltaTime;
         transform.Translate(playerMovement, Space.Self);
         #endregion
 
