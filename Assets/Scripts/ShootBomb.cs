@@ -14,14 +14,19 @@ public class ShootBomb : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(collision.gameObject.name);
-        if (collision.transform.tag.Equals("Player"))
+        Debug.Log(other.gameObject.name);
+        if (other.transform.tag.Equals("Player"))
         {
-            Idamagable hit = collision.gameObject.GetComponent<Idamagable>();
+            Idamagable hit = other.gameObject.GetComponent<Idamagable>();
             hit.TakeDamage();
         }
         gameObject.SetActive(false);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        
     }
 }
