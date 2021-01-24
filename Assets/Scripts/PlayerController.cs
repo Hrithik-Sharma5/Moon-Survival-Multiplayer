@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour, Idamagable
 {
     [SerializeField] Animator playerAnim;
+    [SerializeField] Animator playerCanvasAnim;
     [SerializeField] float baseSpeed, horizontalSpeed;
     [SerializeField] Transform playerCam;
     [SerializeField] GameObject shootParticle;
     [SerializeField] GameObject HitParticle;
     [SerializeField] Slider healthSlider;
-
+    [SerializeField] LayerMask layerToIgnore;
 
     float totalHealth=100;
     float damagedHealth = 90;
@@ -75,7 +76,10 @@ public class PlayerController : MonoBehaviour, Idamagable
                 playerAnim.SetFloat("Horizontal", 2);
                 isRunning = true;
             }
-            else playerAnim.SetFloat("Horizontal", 1);
+            else { 
+                playerAnim.SetFloat("Horizontal", 1);
+                speed = baseSpeed; 
+            }
 
             playerAnim.SetInteger("Speed", 1);
         }
@@ -131,6 +135,7 @@ public class PlayerController : MonoBehaviour, Idamagable
     {
         currentHealth -= healthToReduce;
         healthSlider.value = currentHealth / totalHealth;
+        playerCanvasAnim.SetTrigger("Hit");
         if (currentHealth <= 0) Die();
     }
 
@@ -159,7 +164,7 @@ public class PlayerController : MonoBehaviour, Idamagable
         while (isShooting)
         {
             RaycastHit _hit;
-            if(Physics.Raycast(playerCam.position, playerCam.forward, out _hit, 100))
+            if(Physics.Raycast(playerCam.position, playerCam.forward, out _hit, 100, ~layerToIgnore))
             {
                 Instantiate(HitParticle, _hit.point, Quaternion.identity);
                 Idamagable damage = _hit.transform.GetComponent<Idamagable>();

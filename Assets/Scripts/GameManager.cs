@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static List<GameObject> allPlayers= new List<GameObject>();
     public Transform[] spawnPos;
     public GameObject enemy;
+    public Transform enemyContainer;
 
     void Start()
     {
@@ -22,16 +23,19 @@ public class GameManager : MonoBehaviour
 
         foreach (var item in spawnPos)
         {
-            Instantiate(enemy, item.position, Quaternion.identity);
+            Instantiate(enemy, item.position, Quaternion.identity, enemyContainer);
         }
         StartCoroutine(SpawnEnemy());
     }
 
     IEnumerator SpawnEnemy()
     {
-        yield return new WaitForSeconds(5);
-        int randomPoint = Random.Range(0, spawnPos.Length);
-        Instantiate(enemy, spawnPos[randomPoint].position, Quaternion.identity);
+        while (true)
+        {
+            yield return new WaitForSeconds(10);
+            int randomPoint = Random.Range(0, spawnPos.Length);
+            Instantiate(enemy, spawnPos[randomPoint].position, Quaternion.identity, enemyContainer);
+        }
     }
 
 }

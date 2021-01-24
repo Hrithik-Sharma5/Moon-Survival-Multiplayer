@@ -12,7 +12,9 @@ public abstract class Enemy : MonoBehaviour, Idamagable
     [SerializeField]private GameObject enemyDieParticle;
     [SerializeField] private GameObject shootProjectile;
     [SerializeField] Transform shootingPoint;
-    protected float currentHealth;
+
+    private float currentHealth;
+    private float healthToReduce;
     private float enemyDistance;
     private GameObject closestEnemy;
     private NavMeshAgent navMesh;
@@ -23,6 +25,7 @@ public abstract class Enemy : MonoBehaviour, Idamagable
         navMesh = GetComponent<NavMeshAgent>();
         anim=GetComponentInChildren<Animator>();
         currentHealth = totalHealth;
+        healthToReduce = totalHealth / damageHealth;
         healthSlider.value = 1;
         enemyDistance = Vector3.Distance(transform.position, GameManager.allPlayers[0].transform.position);
         closestEnemy = GameManager.allPlayers[0];
@@ -35,7 +38,7 @@ public abstract class Enemy : MonoBehaviour, Idamagable
 
     public void TakeDamage()
     {
-        currentHealth -= totalHealth/damageHealth;
+        currentHealth -= healthToReduce;
         healthSlider.value = currentHealth / totalHealth;
         if (currentHealth <= 0) Die();
     }
@@ -66,7 +69,7 @@ public abstract class Enemy : MonoBehaviour, Idamagable
         }
         else
         {
-            navMesh.speed = 4;
+            navMesh.speed = 3;
             anim.SetBool("Attack", false);
         }
     }
