@@ -14,11 +14,26 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject createRoomPanel;
     [SerializeField] GameObject roomListPanel;
     [SerializeField] GameObject[] allPanels;
+    [SerializeField] GameObject playerInfoPrefab;
+    [SerializeField] GameObject playerInfoPrefabParent;
+    [SerializeField] GameObject roomPlayerPrefab;
+    [SerializeField] GameObject roomPlayerPrefabParent;
+    [SerializeField] Text currentStatus;
+
+    private Dictionary<string, RoomInfo> roomListInfo;
+    private Dictionary<string, GameObject> roomListInfoGameobject;
 
     void Start()
     {
-
+        roomListInfo = new Dictionary<string, RoomInfo>();
+        roomListInfoGameobject = new Dictionary<string, GameObject>();
     }
+
+    private void Update()
+    {
+        currentStatus.text = "Current state: "+PhotonNetwork.NetworkClientState;
+    }
+
 
     #region Callbacks for buttons
 
@@ -43,7 +58,17 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnShowRoomListButton() 
+    {
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+        ActivatePanel(roomListPanel);
+    }
+
     #endregion
+
 
     #region Photon Callbacks
     public override void OnConnectedToMaster()
@@ -56,8 +81,45 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
         ActivatePanel(insideRoomPanel);
     }
 
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        ClearRoomList();
+
+        foreach (RoomInfo room in roomList)
+        {
+            if (roomListInfo.ContainsKey(room.Name))
+            {
+                roomListInfo.Remove(room.Name);
+            }
+            roomListInfo.Add(room.Name, room);
+            GameObject roomListPlayerinfo = Instantiate(roomPlayerPrefab, roomPlayerPrefabParent.transform);
+            roomListPlayerinfo.transform.Find("Room Name").GetComponent<Text>().text = room.Name;
+            roomListPlayerinfo.transform.Find("Join Room").GetComponent<Button>().onClick.AddListener(()=>AddToRoom(room.Name));
+            roomListInfoGameobject.Add(room.Name, roomListPlayerinfo);
+        }
+
+
+    }
+
+    public override void OnJoinedRoom()
+    {
+        GameObject playerListGameobject = Instantiate(playerInfoPrefab, playerInfoPrefabParent.transform);
+        //playerListGameobject.transform.Find("Player Name").GetComponent<Text>().text = player.NickName;
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        
+    }
+
+    public override void OnLeftLobby()
+    {
+        ClearRoomList();
+        roomListInfoGameobject.Clear();
+    }
 
     #endregion
+
 
     #region Helper Functions
 
@@ -73,6 +135,24 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    private void AddToRoom(string _roomName)
+    {
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+        PhotonNetwork.JoinRoom(_roomName);
+    }
+
+    private void ClearRoomList()
+    {
+        foreach (var item in roomListInfoGameobject.Values)
+        {
+            Destroy(item);
+        }
+
+        roomListInfoGameobject.Clear();
+    }
 
     #endregion 
 
