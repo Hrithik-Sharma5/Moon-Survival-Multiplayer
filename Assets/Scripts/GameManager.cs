@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject enemy;
     public Transform enemyContainer;
 
-    [SerializeField]private GameObject projectileContainer;
-    [SerializeField]private GameObject shootParticleContainer;
+    [SerializeField] private GameObject projectileContainer;
+    [SerializeField] private GameObject shootParticleContainer;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private GameObject shootParticlePrefab;
     [SerializeField] private GameObject enemyPrefab;
@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+
     IEnumerator SpawnEnemy()
     {
         GameObject enemyPrefab;
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in enemyList)
         {
-            if (item.activeSelf) return item;
+           if (item.activeSelf) return item;
         }
         return null;
     }

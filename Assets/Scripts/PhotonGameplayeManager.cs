@@ -13,7 +13,8 @@ public class PhotonGameplayeManager : MonoBehaviour
     {
         Vector3 playerPos = new Vector3(Random.Range(-54, -46), -4, Random.Range(-10, 34));
         GameObject player= PhotonNetwork.Instantiate(playerPrefab.name, playerPos, Quaternion.identity);
-        freeLookCamera.Follow = player.transform;
+        freeLookCamera.Follow = player.transform.Find("Camera Focus").transform;
+        freeLookCamera.LookAt = player.transform.Find("Camera Focus").transform;
     }
 
 }

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class PlayerController : MonoBehaviour, Idamagable
+public class PlayerController : MonoBehaviourPunCallbacks, Idamagable
 {
     [SerializeField] Animator playerAnim;
     [SerializeField] Animator playerCanvasAnim;
@@ -26,7 +27,12 @@ public class PlayerController : MonoBehaviour, Idamagable
 
     void Start()
     {
+        if (!photonView.IsMine)
+        {
+            this.enabled = false;
+        }
         isAlive = true;
+        playerCam = Camera.main.transform;
         GameManager.allPlayers.Add(this.gameObject);
         rb = GetComponent<Rigidbody>();
         currentHealth = totalHealth;

@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 0aa8542f4828c424abf0e339e48f8953,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -623,7 +623,7 @@ MonoBehaviour:
   m_XAxis:
     Value: -149.08391
     m_SpeedMode: 0
-    m_MaxSpeed: 700
+    m_MaxSpeed: 600
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -1263,6 +1263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1767488731}
   - component: {fileID: 1767488730}
+  - component: {fileID: 1767488732}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1311,6 +1312,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1767488732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767488729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1826631738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,6 +1595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 507090983939883512, guid: bcb9e84fc9d55eb4192209514c373076,
     type: 3}
+  freeLookCamera: {fileID: 733926609}
 --- !u!1 &371575698572306221 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 713868839911211675, guid: 131ac44afda3dda46afef5bb1ae47c88,

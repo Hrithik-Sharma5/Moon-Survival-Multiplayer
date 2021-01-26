@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 8370047135808932229}
   - component: {fileID: 2867319552618642237}
   - component: {fileID: 3015214857617664157}
+  - component: {fileID: 7782660302582209356}
   m_Layer: 0
   m_Name: Robot Kyle
   m_TagString: Player
@@ -447,7 +448,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 3015214857617664157}
+  - {fileID: 7782660302582209356}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -467,6 +469,45 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &7782660302582209356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507090983939883512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: Walk
+  - Type: 4
+    SynchronizeType: 2
+    Name: Firing
+  - Type: 3
+    SynchronizeType: 2
+    Name: Speed
+  - Type: 9
+    SynchronizeType: 2
+    Name: Jump
+  - Type: 9
+    SynchronizeType: 2
+    Name: LandOnGround
+  - Type: 1
+    SynchronizeType: 2
+    Name: Horizontal
+  - Type: 1
+    SynchronizeType: 2
+    Name: Vertical
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &643112383977748281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2028,7 +2069,7 @@ GameObject:
   - component: {fileID: 8370047135758013852}
   - component: {fileID: 8370047135758013853}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Camera Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
