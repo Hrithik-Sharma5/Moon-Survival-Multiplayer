@@ -18,6 +18,7 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerInfoPrefabParent;
     [SerializeField] GameObject roomPlayerPrefab;
     [SerializeField] GameObject roomPlayerPrefabParent;
+    [SerializeField] GameObject startGameButton;
     [SerializeField] Text currentStatus;
 
     private Dictionary<string, RoomInfo> roomListInfo;
@@ -25,14 +26,15 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         roomListInfo = new Dictionary<string, RoomInfo>();
         roomListInfoGameobject = new Dictionary<string, GameObject>();
     }
 
-    private void Update()
-    {
-        currentStatus.text = "Current state: "+PhotonNetwork.NetworkClientState;
-    }
+    //private void Update()
+    //{
+    //    currentStatus.text = "Current state: "+PhotonNetwork.NetworkClientState;
+    //}
 
 
     #region Callbacks for buttons
@@ -67,8 +69,15 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
         ActivatePanel(roomListPanel);
     }
 
-    #endregion
+    public void OnStartGameButton()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Gameplay");
+        }
+    }
 
+    #endregion
 
     #region Photon Callbacks
     public override void OnConnectedToMaster()
@@ -103,13 +112,19 @@ public class PhotonLobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        GameObject playerListGameobject = Instantiate(playerInfoPrefab, playerInfoPrefabParent.transform);
-        //playerListGameobject.transform.Find("Player Name").GetComponent<Text>().text = player.NickName;
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) startGameButton.SetActive(true);
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            GameObject playerListGameobject = Instantiate(playerInfoPrefab, playerInfoPrefabParent.transform);
+            playerListGameobject.transform.Find("Player Name").GetComponent<Text>().text = player.NickName;
+        }
+        ActivatePanel(insideRoomPanel);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        
+        GameObject playerListGameobject = Instantiate(playerInfoPrefab, playerInfoPrefabParent.transform);
+        playerListGameobject.transform.Find("Player Name").GetComponent<Text>().text = newPlayer.NickName;
     }
 
     public override void OnLeftLobby()
